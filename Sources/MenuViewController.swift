@@ -19,7 +19,7 @@
 import UIKit
 
 protocol MenuViewControllerDelegate: class {
-    func menuController(_ menuController: MenuViewController, showContentController contentController: UIViewController)
+    func menuController(_ menuController: MenuViewController, showContentController contentController: UIViewController, modal: Bool)
 }
 
 /**
@@ -38,15 +38,15 @@ public extension MenuViewController {
      Notifies the system to select the initial content controller to display.
      */
     func selectInitialContentController(_ contentController: UIViewController) {
-        delegate?.menuController(self, showContentController: contentController)
+        delegate?.menuController(self, showContentController: contentController, modal: false)
     }
 
     /**
      Notifies the system that a new controller has been select and the layout should update accordingly.
      If overriding, remember to call super at the end of your implementation.
     */
-    func selectSideItemContent(_ contentController: UIViewController) {
-        delegate?.menuController(self, showContentController: contentController)
+    func selectSideItemContent(_ contentController: UIViewController, modal: Bool = false) {
+        delegate?.menuController(self, showContentController: contentController, modal: modal)
         InteractiveSideMenu.shared.closeSideMenu()
     }
 }

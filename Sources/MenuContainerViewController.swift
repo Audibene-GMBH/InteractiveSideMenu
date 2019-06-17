@@ -51,8 +51,12 @@ open class MenuContainerViewController: UIViewController {
 }
 
 extension MenuContainerViewController: MenuViewControllerDelegate {
-    func menuController(_ menuController: MenuViewController, showContentController contentController: UIViewController) {
-        selectContentViewController(contentController)
+    func menuController(_ menuController: MenuViewController, showContentController contentController: UIViewController, modal: Bool) {
+        if modal {
+            currentContentViewController?.navigationController?.pushViewController(contentController, animated: true)
+        } else {
+            selectContentViewController(contentController)
+        }
     }
 }
 
@@ -64,7 +68,7 @@ private extension MenuContainerViewController {
      - parameter selectedContentVC: The view controller to be added.
      */
     func setCurrentView(_ selectedContentVC: UIViewController) {
-        addChildViewController(selectedContentVC)
+        addChild(selectedContentVC)
         view.addSubviewWithFullSizeConstraints(view: selectedContentVC.view)
         currentContentViewController = selectedContentVC
     }
@@ -78,7 +82,7 @@ private extension MenuContainerViewController {
         if let currentContentVC = currentContentViewController {
             if currentContentVC != selectedContentVC {
                 currentContentVC.view.removeFromSuperview()
-                currentContentVC.removeFromParentViewController()
+                currentContentVC.removeFromParent()
 
                 setCurrentView(selectedContentVC)
             }
